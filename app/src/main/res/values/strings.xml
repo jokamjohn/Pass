@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Pass</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="login_label">Login</string>
+    <string name="signup_text">Don`t have an account? SignUp</string>
+
+
+</resources>
