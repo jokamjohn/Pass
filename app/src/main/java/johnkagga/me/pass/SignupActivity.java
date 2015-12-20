@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -23,8 +24,9 @@ public class SignupActivity extends AppCompatActivity {
     protected EditText mUsername;
     protected EditText mPassword;
     protected EditText mEmail;
-    protected Button mSignUpButton;
     protected EditText mConfirmPassword;
+    protected Button mSignUpButton;
+    protected ProgressBar mSignUpBar;
 
     private String possibleEmail;
 
@@ -40,6 +42,9 @@ public class SignupActivity extends AppCompatActivity {
         mEmail = (EditText) findViewById(R.id.signup_email);
         mConfirmPassword = (EditText) findViewById(R.id.re_enter_password);
         mSignUpButton = (Button) findViewById(R.id.signup_button);
+        mSignUpBar = (ProgressBar) findViewById(R.id.signup_progress_bar);
+
+        mSignUpBar.setVisibility(View.INVISIBLE);
 
         settingDefaultUserEmail();
 
@@ -77,6 +82,7 @@ public class SignupActivity extends AppCompatActivity {
                     Helper.alertDialog(SignupActivity.this, title, errorMessage);
                 } else {
                     //create user
+                    mSignUpBar.setVisibility(View.VISIBLE);
                     ParseUser parseUser = new ParseUser();
                     parseUser.setUsername(username);
                     parseUser.setEmail(email);
@@ -85,6 +91,7 @@ public class SignupActivity extends AppCompatActivity {
                     parseUser.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {
+                            mSignUpBar.setVisibility(View.INVISIBLE);
                             if (e == null) {
                                 //Proceed to the main activity
                                 Intent intent = new Intent(SignupActivity.this, MainActivity.class);

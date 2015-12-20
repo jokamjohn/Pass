@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.parse.LogInCallback;
@@ -19,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     protected EditText mUsername;
     protected EditText mPassword;
     protected Button mLoginButton;
+    protected ProgressBar mLoginBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,8 @@ public class LoginActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         initializeScreen();
+
+        mLoginBar.setVisibility(View.INVISIBLE);
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,9 +51,13 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else {
                     //Login user
+                    //make progress bar visible
+                    mLoginBar.setVisibility(View.VISIBLE);
                     ParseUser.logInInBackground(username, password, new LogInCallback() {
                         @Override
                         public void done(ParseUser user, ParseException e) {
+                            //hide the progress bar
+                            mLoginBar.setVisibility(View.INVISIBLE);
                             if (e == null)
                             {
                                 //successfully logged in
@@ -95,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
         mUsername = (EditText) findViewById(R.id.usernameField);
         mPassword = (EditText) findViewById(R.id.passwordField);
         mLoginButton = (Button) findViewById(R.id.loginButton);
+        mLoginBar = (ProgressBar) findViewById(R.id.login_progress_bar);
     }
 
 }
