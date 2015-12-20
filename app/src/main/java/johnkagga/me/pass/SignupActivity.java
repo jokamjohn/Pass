@@ -2,7 +2,6 @@ package johnkagga.me.pass;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -61,28 +60,22 @@ public class SignupActivity extends AppCompatActivity {
                 email = email.trim();
                 confirmedEmail = confirmedEmail.trim();
 
-                if (username.isEmpty() || password.isEmpty() || email.isEmpty() || confirmedEmail.isEmpty())
-                {
+                if (username.isEmpty() || password.isEmpty() || email.isEmpty() || confirmedEmail.isEmpty()) {
                     String title = getString(R.string.signup_title_dialog);
                     String message = getString(R.string.signup_dialog_msg);
+                    //Dialog
+                    Helper.alertDialog(SignupActivity.this, title, message);
 
-                    alertDialog(title,message);
 
-
-                }
-                else if (!isEmailValid(email))
-                {
-                    Toast.makeText(SignupActivity.this, R.string.signup_invalid_email_error,Toast.LENGTH_LONG)
+                } else if (!isEmailValid(email)) {
+                    Toast.makeText(SignupActivity.this, R.string.signup_invalid_email_error, Toast.LENGTH_LONG)
                             .show();
-                }
-                else if (!isPasswordMatching(password,confirmedEmail))
-                {
+                } else if (!isPasswordMatching(password, confirmedEmail)) {
                     String errorMessage = getString(R.string.password_does_not_match);
                     String title = getString(R.string.password_error_title);
-
-                    alertDialog(title,errorMessage);
-                }
-                else {
+                    //Dialog
+                    Helper.alertDialog(SignupActivity.this, title, errorMessage);
+                } else {
                     //create user
                     ParseUser parseUser = new ParseUser();
                     parseUser.setUsername(username);
@@ -92,41 +85,24 @@ public class SignupActivity extends AppCompatActivity {
                     parseUser.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {
-                        if (e == null)
-                        {
-                            //Proceed to the main activity
-                            Intent intent = new Intent(SignupActivity.this,MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        }
-                        else {
-                            String title = getString(R.string.sign_up_error_title);
-                            String message = e.getMessage();
-                            //Show the error in the dialog
-                            alertDialog(title,message);
-                        }
+                            if (e == null) {
+                                //Proceed to the main activity
+                                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            } else {
+                                String title = getString(R.string.sign_up_error_title);
+                                String message = e.getMessage();
+                                //Show the error in the dialog
+                                Helper.alertDialog(SignupActivity.this, title, message);
+                            }
                         }
                     });
-
-
                 }
             }
         });
 
-
-
-    }
-
-    private void alertDialog(String title,String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(SignupActivity.this);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, null);
-
-        //Create the Dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     /**
@@ -141,7 +117,6 @@ public class SignupActivity extends AppCompatActivity {
                 possibleEmail = account.name;
             }
         }
-
         mEmail.setText(possibleEmail);
     }
 
