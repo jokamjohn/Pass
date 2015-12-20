@@ -19,6 +19,7 @@
     <string name="sign_up_error_title">Sign Up Error</string>
     <string name="login_error_message">Please enter a correct username and password</string>
     <string name="sin_in_error_title">Sign In Error</string>
+    <string name="log_out_label">Logout</string>
 
 
 </resources>
