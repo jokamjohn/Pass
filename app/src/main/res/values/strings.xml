@@ -9,6 +9,14 @@
     <string name="signup_text">Don`t have an account? SignUp</string>
     <string name="title_activity_signup">Signup</string>
     <string name="signup_button_label">Sign Up</string>
+    <string name="signup_title_dialog">Oops!</string>
+    <string name="signup_dialog_msg">Please enter your username,password and email address</string>
+    <string name="signup_invalid_email_error">Enter a valid Email Address</string>
+    <string name="email_hint">Email</string>
+    <string name="re_enter_password_hint">Re-enter Password</string>
+    <string name="password_does_not_match">Passwords do not match</string>
+    <string name="password_error_title">Password</string>
+    <string name="sign_up_error_title">Sign Up Error</string>
 
 
 </resources>
