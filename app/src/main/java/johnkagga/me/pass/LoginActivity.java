@@ -20,6 +20,14 @@ public class LoginActivity extends AppCompatActivity {
 
         initializeScreen();
 
+        startSignUpActivity();
+
+    }
+
+    /**
+     * Start the sign up activity by an intent
+     */
+    private void startSignUpActivity() {
         mSignupText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -27,9 +35,11 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
+    /**
+     * Initialize the widgets
+     */
     private void initializeScreen() {
         mSignupText = (TextView) findViewById(R.id.signupText);
     }
