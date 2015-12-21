@@ -13,4 +13,10 @@
         android:orderInCategory="101"
         android:title="@string/log_out_label"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_edit_friends"
+        android:orderInCategory="102"
+        android:title="@string/edit_friends_menu_option"
+        app:showAsAction="never"/>
 </menu>

@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.parse.Parse;
 
-public class PassAppplication extends Application {
+public class PassApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();

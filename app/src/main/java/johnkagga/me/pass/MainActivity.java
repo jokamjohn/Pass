@@ -96,6 +96,11 @@ public class MainActivity extends AppCompatActivity {
             ParseUser.logOut();
             startLoginActivity();
         }
+        else if (id == R.id.action_edit_friends)
+        {
+            Intent intent = new Intent(this,EditFriendsActivity.class);
+            startActivity(intent);
+        }
 
         return super.onOptionsItemSelected(item);
     }
