@@ -25,8 +25,16 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
-        return MainActivity.PlaceholderFragment.newInstance(position + 1);
+
+        switch (position)
+        {
+            case 0:
+                return new InboxFragment();
+            case 1:
+                return new FriendsFragment();
+        }
+        return null;
+
     }
 
     @Override
@@ -39,9 +47,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "INBOX";
+                return mContext.getString(R.string.inbox_fragment_title);
             case 1:
-                return "FRIENDS";
+                return mContext.getString(R.string.friends_fragment_title);
         }
         return null;
     }
