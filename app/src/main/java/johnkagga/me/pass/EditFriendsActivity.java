@@ -46,18 +46,27 @@ public class EditFriendsActivity extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Add relation and save
-                mUserParseRelation.add(mUsers.get(position));
-                mCurrentUser.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null)
-                        {
-                            //error occurred
-                            Log.e(LOG_TAG,e.getMessage());
+
+                if (mListView.isItemChecked(position))
+                {
+                    //If the item is checked
+                    //Add relation and save
+                    mUserParseRelation.add(mUsers.get(position));
+                    mCurrentUser.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null)
+                            {
+                                //error occurred
+                                Log.e(LOG_TAG,e.getMessage());
+                            }
                         }
-                    }
-                });
+                    });
+                }
+                else {
+                    //UnFriend
+                }
+
             }
         });
 
@@ -98,6 +107,8 @@ public class EditFriendsActivity extends AppCompatActivity {
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(EditFriendsActivity.this,
                             android.R.layout.simple_list_item_checked, usernames);
                     mListView.setAdapter(adapter);
+                    //Add check marks
+                    addFriendCheckMarks();
 
                 } else {
                     Log.i(LOG_TAG, e.getMessage());
@@ -105,6 +116,35 @@ public class EditFriendsActivity extends AppCompatActivity {
                     String message = e.getMessage();
                     //Make an Alert Dialog
                     Helper.alertDialog(EditFriendsActivity.this, title, message);
+                }
+            }
+        });
+    }
+
+    /**
+     * Add a check mark to the friends added by the user
+     */
+    private void addFriendCheckMarks()
+    {
+        mUserParseRelation.getQuery().findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> friends, ParseException e) {
+                if (e == null) {
+                    //loop through all the friends returned from
+                    //ParseQuery for all friends
+                    for (int i = 0; i < mUsers.size(); i++) {
+                        ParseUser user = mUsers.get(i);
+
+                        //Loop through the list of friends returned
+                        for (ParseUser friend : friends) {
+                            if (friend.getObjectId().equals(user.getObjectId())) {
+                                mListView.setItemChecked(i, true);
+                            }
+                        }
+                    }
+                }
+                else {
+                    Log.e(LOG_TAG,e.getMessage());
                 }
             }
         });
