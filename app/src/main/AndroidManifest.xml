@@ -47,7 +47,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="johnkagga.me.pass.MainActivity"/>
+                android:value="johnkagga.me.pass.LoginActivity"/>
         </activity>
 
         <activity

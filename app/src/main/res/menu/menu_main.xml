@@ -4,19 +4,20 @@
       tools:context="johnkagga.me.pass.MainActivity">
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="97"
         android:title="@string/action_settings"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_logOut"
-        android:orderInCategory="101"
+        android:orderInCategory="99"
         android:title="@string/log_out_label"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_edit_friends"
-        android:orderInCategory="102"
+        android:orderInCategory="98"
         android:title="@string/edit_friends_menu_option"
         app:showAsAction="never"/>
+
 </menu>
