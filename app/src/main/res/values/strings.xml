@@ -30,6 +30,9 @@
     <string name="menu_camera_label">Camera</string>
     <string name="camera_toast_error_msg">No external storage found</string>
     <string name="general_error">Sorry there was an error</string>
+    <string name="video_size_notice">Video must be less than 10 MBs</string>
+    <string name="file_not_found_error">File cannot be found</string>
+    <string name="io_error">An error has occured</string>
 
     <string-array name="camera_choices">
         <item>Take Picture</item>

@@ -20,6 +20,9 @@ import android.widget.Toast;
 import com.parse.ParseUser;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     public final static int MEDIA_TYPE_IMAGE = 4;
     public final static int MEDIA_TYPE_VIDEO = 5;
+
+    public static final int FILE_SIZE_LIMIT = 1024*1024*10; //10 MBs
 
     private Uri mMediaUri;
 
@@ -80,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
                     startActivityForResult(chooseImageIntent,CHOOSE_PHOTO_CODE);
                     break;
                 case 3: //Choose video
+                    Intent chooseVideoIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    chooseVideoIntent.setType("image/*");
+                    Toast.makeText(MainActivity.this,getString(R.string.video_size_notice),Toast.LENGTH_LONG)
+                            .show();
+                    startActivityForResult(chooseVideoIntent, CHOOSE_VIDEO_CODE);
                     break;
             }
         }
@@ -208,6 +218,45 @@ public class MainActivity extends AppCompatActivity {
                     else {
                         //get the uri of the media
                         mMediaUri = data.getData();
+                    }
+                    Log.v(LOG_TAG,"Content: " + mMediaUri);
+                    if (requestCode == CHOOSE_VIDEO_CODE)
+                    {
+                        //make sure the file size is less than 10 MBs
+                        int fileSize = 0;
+                        InputStream inputStream = null;
+                        try {
+                            inputStream = getContentResolver().openInputStream(mMediaUri);
+                            assert inputStream != null;
+                            fileSize = inputStream.available();
+                        } catch (FileNotFoundException e) {
+                            Toast.makeText(this,getString(R.string.file_not_found_error),Toast.LENGTH_LONG)
+                                    .show();
+                            //Abort
+                            return;
+                        } catch (IOException e) {
+                            Toast.makeText(this,getString(R.string.io_error),Toast.LENGTH_LONG)
+                                    .show();
+                            //Abort
+                            return;
+                        }
+                        finally {
+                            try {
+                                assert inputStream != null;
+                                inputStream.close();
+                            } catch (IOException e) {
+                                //do nothing
+                            }
+                        }
+                        //checking the file size
+                        if (fileSize >= FILE_SIZE_LIMIT)
+                        {
+                            Toast.makeText(this,"The chosen file is exceeds 10 MBs",Toast.LENGTH_LONG)
+                                    .show();
+                            //Abort activity
+                            return;
+                        }
+
                     }
                 } else {
                     //Add the image to the gallery
