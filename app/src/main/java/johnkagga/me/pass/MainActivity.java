@@ -198,20 +198,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK)
-        {
-            //Add the image to the gallery
-            //Broadcast an intent for new media
-            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            mediaScanIntent.setData(mMediaUri);
-            sendBroadcast(mediaScanIntent);
-            Log.i(LOG_TAG,"saved image to gallery");
+        if (resultCode == RESULT_OK) {
+                if (requestCode == CHOOSE_PHOTO_CODE || requestCode == CHOOSE_VIDEO_CODE) {
+                    if (data == null)
+                    {
+                        Toast.makeText(this,R.string.general_error,Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    else {
+                        //get the uri of the media
+                        mMediaUri = data.getData();
+                    }
+                } else {
+                    //Add the image to the gallery
+                    //Broadcast an intent for new media
+                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    mediaScanIntent.setData(mMediaUri);
+                    sendBroadcast(mediaScanIntent);
+                    Log.i(LOG_TAG, "saved image to gallery");
+                }
         }
         else if (resultCode != RESULT_CANCELED)
         {
-            Toast.makeText(this,"Sorry there was an error",Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(this, R.string.general_error, Toast.LENGTH_LONG)
+                        .show();
         }
+
     }
 
     /**

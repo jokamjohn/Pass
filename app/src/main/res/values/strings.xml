@@ -29,6 +29,7 @@
     <string name="query_friends_dialog_title">Sorry</string>
     <string name="menu_camera_label">Camera</string>
     <string name="camera_toast_error_msg">No external storage found</string>
+    <string name="general_error">Sorry there was an error</string>
 
     <string-array name="camera_choices">
         <item>Take Picture</item>
