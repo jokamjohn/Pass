@@ -2,7 +2,9 @@ package johnkagga.me.pass;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,27 +15,48 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.parse.ParseUser;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private final static int TAKE_PHOTO_CODE = 0;
-    private final static int TAKE_VIDEO_CODE = 1;
-    private final static int CHOOSE_PHOTO_CODE = 2;
-    private final static int CHOOSE_VIDEO_CODE = 3;
+    //RequestCodes
+    public final static int TAKE_PHOTO_CODE = 0;
+    public final static int TAKE_VIDEO_CODE = 1;
+    public final static int CHOOSE_PHOTO_CODE = 2;
+    public final static int CHOOSE_VIDEO_CODE = 3;
 
+    public final static int MEDIA_TYPE_IMAGE = 4;
+    public final static int MEDIA_TYPE_VIDEO = 5;
 
-    private DialogInterface.OnClickListener mDialogListener = mDialogListener = new DialogInterface.OnClickListener() {
+    private Uri mMediaUri;
+
+    private DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             switch (which)
             {
                 case 0://Take Picture
                     Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(takePhotoIntent,TAKE_PHOTO_CODE);
+                    mMediaUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+                    //check if SD is not null
+                    if (mMediaUri != null) {
+                        takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
+                        startActivityForResult(takePhotoIntent, TAKE_PHOTO_CODE);
+
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, R.string.camera_toast_error_msg,Toast.LENGTH_LONG)
+                                .show();
+                    }
                     break;
                 case 1: //Take Video
                     break;
@@ -42,6 +65,73 @@ public class MainActivity extends AppCompatActivity {
                 case 3: //Choose video
                     break;
             }
+        }
+
+        /** Create a File for saving an image or video */
+        private File getOutputMediaFile(int mediaType) {
+            // To be safe, you should check that the SDCard is mounted
+            // using Environment.getExternalStorageState() before doing this.
+            if (isExternalStorageAvailable())
+            {
+                //create the file path
+                // 1. Get the external storage directory
+                String appName = MainActivity.this.getString(R.string.app_name);
+                File mediaStorageDir = new File(Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                        appName);
+
+                // 2.create our sub directory if it does not exist
+                if (!mediaStorageDir.exists())
+                {
+                    if (!mediaStorageDir.mkdirs())
+                    {
+                        //fails to make a directory
+                        Log.e(LOG_TAG,appName + "failed to make a directory");
+                        return null;
+                    }
+                }
+
+                // 3. create a file name
+                Date now = new Date();
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                        Locale.getDefault()).format(now);
+                File mediaFile;
+
+                if (mediaType == MEDIA_TYPE_IMAGE)
+                {
+                    mediaFile = new File (mediaStorageDir.getPath() + File.separator
+                            + "IMG_" + timeStamp + ".jpg");
+                }
+                else if (mediaType == MEDIA_TYPE_VIDEO)
+                {
+                    mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                    + "VID_" + timeStamp + ".mp4");
+                }
+                else {
+                    //media file not created
+                    return null;
+                }
+                return mediaFile;
+            }
+            else {
+                return null;
+            }
+        }
+
+        /** Create a file Uri for saving an image or video */
+        private Uri getOutputMediaFileUri(int mediaType) {
+            Log.v(LOG_TAG,"File: " + Uri.fromFile(getOutputMediaFile(mediaType)));
+            return Uri.fromFile(getOutputMediaFile(mediaType));
+        }
+
+        /**
+         * Check whether there is external storage
+         * @return Boolean
+         */
+        private boolean isExternalStorageAvailable()
+        {
+            String state = Environment.getExternalStorageState();
+            return state.equals(Environment.MEDIA_MOUNTED);
         }
     };
     /**
