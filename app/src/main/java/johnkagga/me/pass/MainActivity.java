@@ -59,6 +59,20 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case 1: //Take Video
+                    Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                    mMediaUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+                    //check if SD is not null
+                    if (mMediaUri != null) {
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mMediaUri);
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,10);//10 seconds
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);//lowest quality
+                        startActivityForResult(takeVideoIntent, TAKE_VIDEO_CODE);
+
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, R.string.camera_toast_error_msg,Toast.LENGTH_LONG)
+                                .show();
+                    }
                     break;
                 case 2: //Choose image
                     break;
@@ -176,6 +190,25 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK)
+        {
+            //Add the image to the gallery
+            //Broadcast an intent for new media
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            mediaScanIntent.setData(mMediaUri);
+            sendBroadcast(mediaScanIntent);
+            Log.i(LOG_TAG,"saved image to gallery");
+        }
+        else if (resultCode != RESULT_CANCELED)
+        {
+            Toast.makeText(this,"Sorry there was an error",Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     /**
