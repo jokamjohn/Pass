@@ -53,20 +53,20 @@ public class EditFriendsActivity extends AppCompatActivity {
                     //If the item is checked
                     //Add relation and save
                     mUserParseRelation.add(mUsers.get(position));
-                    mCurrentUser.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e != null)
-                            {
-                                //error occurred
-                                Log.e(LOG_TAG,e.getMessage());
-                            }
-                        }
-                    });
                 }
                 else {
-                    //UnFriend
+                    mUserParseRelation.remove(mUsers.get(position));
                 }
+                mCurrentUser.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null)
+                        {
+                            //error occurred
+                            Log.e(LOG_TAG,e.getMessage());
+                        }
+                    }
+                });
 
             }
         });
