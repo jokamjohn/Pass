@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case 2: //Choose image
+                    Intent chooseImageIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    chooseImageIntent.setType("image/*");
+                    startActivityForResult(chooseImageIntent,CHOOSE_PHOTO_CODE);
                     break;
                 case 3: //Choose video
                     break;
