@@ -26,6 +26,7 @@ public class EditFriendsActivity extends AppCompatActivity {
     protected ListView mListView;
     protected List<ParseUser> mUsers;
     protected ProgressBar mProgressBar;
+
     protected ParseRelation<ParseUser> mUserParseRelation;
     protected ParseUser mCurrentUser;
 
