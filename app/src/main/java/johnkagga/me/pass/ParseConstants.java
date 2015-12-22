@@ -7,8 +7,9 @@ public final class ParseConstants {
 
     //Class constants
 
-    //Field constants
+    //Key constants
     public static final String KEY_USERNAME = "username";
     public final static int USER_LIMIT = 1000;
+    public final static String KEY_USER_RELATION = "friends";
 }
 

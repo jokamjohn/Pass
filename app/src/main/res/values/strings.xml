@@ -26,6 +26,7 @@
     <string name="friends_fragment_title">FRIENDS</string>
     <string name="edit_friends_menu_option">Edit Friends</string>
     <string name="title_activity_edit_friends">EditFriendsActivity</string>
+    <string name="query_friends_dialog_title">Sorry</string>
 
 
 </resources>
