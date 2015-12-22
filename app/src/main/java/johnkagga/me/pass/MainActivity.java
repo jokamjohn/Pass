@@ -1,10 +1,13 @@
 package johnkagga.me.pass;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,6 +19,31 @@ import com.parse.ParseUser;
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    private final static int TAKE_PHOTO_CODE = 0;
+    private final static int TAKE_VIDEO_CODE = 1;
+    private final static int CHOOSE_PHOTO_CODE = 2;
+    private final static int CHOOSE_VIDEO_CODE = 3;
+
+
+    private DialogInterface.OnClickListener mDialogListener = mDialogListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which)
+            {
+                case 0://Take Picture
+                    Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePhotoIntent,TAKE_PHOTO_CODE);
+                    break;
+                case 1: //Take Video
+                    break;
+                case 2: //Choose image
+                    break;
+                case 3: //Choose video
+                    break;
+            }
+        }
+    };
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -44,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         else {
             Log.i(LOG_TAG,currentUser.getUsername());
         }
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -88,18 +115,22 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        else if (id == R.id.action_logOut)
-        {
-            ParseUser.logOut();
-            startLoginActivity();
-        }
-        else if (id == R.id.action_edit_friends)
-        {
-            Intent intent = new Intent(this,EditFriendsActivity.class);
-            startActivity(intent);
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_logOut:
+                ParseUser.logOut();
+                startLoginActivity();
+                break;
+            case R.id.action_edit_friends:
+                Intent intent = new Intent(this, EditFriendsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_camera:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setItems(R.array.camera_choices,mDialogListener);
+                AlertDialog dialog = builder.create();
+                dialog.show();
         }
 
         return super.onOptionsItemSelected(item);
