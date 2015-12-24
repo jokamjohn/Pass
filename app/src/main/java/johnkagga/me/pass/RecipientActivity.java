@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -90,7 +91,27 @@ public class RecipientActivity extends AppCompatActivity {
         message.put(ParseConstants.KEY_SENDER_NAME, mCurrentUser.getUsername());
         message.put(ParseConstants.KEY_RECIPIENTS_IDS, getRecipientIds());
         message.put(ParseConstants.KEY_FILE_TYPE,mFileType);
-        return message;
+
+        //Creating the byte file and ParseFile
+        byte[] fileBytes = FileHelper.getByteArrayFromFile(this,mMediaUri);
+
+        if (fileBytes == null)
+        {
+            return null;
+        }
+        else {
+            if (mFileType.equals(ParseConstants.IMAGE_TYPE))
+            {
+                //checking whether its an image
+                fileBytes = FileHelper.reduceImageForUpload(fileBytes);
+            }
+            String filename = FileHelper.getFileName(this,mMediaUri,mFileType);
+            //Create the ParseFile Object
+            ParseFile file = new ParseFile(filename,fileBytes);
+            message.put(ParseConstants.KEY_FILE,file);
+            return message;
+        }
+
     }
 
     /**

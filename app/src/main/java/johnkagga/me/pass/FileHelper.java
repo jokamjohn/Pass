@@ -15,7 +15,7 @@ import java.io.InputStream;
 
 public class FileHelper {
 	
-	public static final String TAG = FileHelper.class.getSimpleName();
+	public static final String LOG_TAG = FileHelper.class.getSimpleName();
 	
 	public static final int SHORT_SIDE_TARGET = 1280;
 	
@@ -30,7 +30,8 @@ public class FileHelper {
         		outStream = new ByteArrayOutputStream();
             
         		byte[] bytesFromFile = new byte[1024*1024]; // buffer size (1 MB)
-        		int bytesRead = inStream.read(bytesFromFile);
+				assert inStream != null;
+				int bytesRead = inStream.read(bytesFromFile);
         		while (bytesRead != -1) {
         			outStream.write(bytesFromFile, 0, bytesRead);
         			bytesRead = inStream.read(bytesFromFile);
@@ -39,12 +40,14 @@ public class FileHelper {
         		fileBytes = outStream.toByteArray();
         	}
 	        catch (IOException e) {
-	        	Log.e(TAG, e.getMessage());
+	        	Log.e(LOG_TAG, e.getMessage());
 	        }
 	        finally {
 	        	try {
-	        		inStream.close();
-	        		outStream.close();
+					assert inStream != null;
+					inStream.close();
+					assert outStream != null;
+					outStream.close();
 	        	}
 	        	catch (IOException e) { /*( Intentionally blank */ }
 	        }
@@ -56,7 +59,7 @@ public class FileHelper {
 	        	fileBytes = IOUtils.toByteArray(fileInput);
         	}
         	catch (IOException e) {
-        		Log.e(TAG, e.getMessage());
+        		Log.e(LOG_TAG, e.getMessage());
         	}
        	}
         
@@ -90,6 +93,7 @@ public class FileHelper {
 			if (uri.getScheme().equals("content")) {
 				// do it using the mime type
 				String mimeType = context.getContentResolver().getType(uri);
+				assert mimeType != null;
 				int slashIndex = mimeType.indexOf("/");
 				String fileExtension = mimeType.substring(slashIndex + 1);
 				fileName += fileExtension;
