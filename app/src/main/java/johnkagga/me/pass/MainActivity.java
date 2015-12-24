@@ -274,10 +274,10 @@ public class MainActivity extends AppCompatActivity {
             String fileType;
             if (requestCode == TAKE_PHOTO_CODE || requestCode == CHOOSE_PHOTO_CODE)
             {
-                fileType = ParseConstants.IMAGE_FILE;
+                fileType = ParseConstants.IMAGE_TYPE;
             }
             else {
-                fileType = ParseConstants.VIDEO_FILE;
+                fileType = ParseConstants.VIDEO_TYPE;
             }
             recipientIntent.putExtra(ParseConstants.KEY_FILE_TYPE,fileType);
             startActivity(recipientIntent);
