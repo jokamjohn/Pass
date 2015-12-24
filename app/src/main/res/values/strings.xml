@@ -42,6 +42,10 @@
     </string-array>
     <string name="title_activity_recipient">Choose Recipient</string>
     <string name="empty_recipient_txt">Please Add some friends</string>
+    <string name="message_dialog_title">We`re sorry</string>
+    <string name="message_dialog_message">There was a problem with the selected file. Select another one</string>
+    <string name="send_error_dialog_message">Message Not sent, Try again</string>
+    <string name="send_success_toast">Message sent</string>
 
 
 </resources>

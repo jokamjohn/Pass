@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -19,6 +20,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +77,19 @@ public class RecipientActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Create the ParseObject and send it
                 ParseObject message = createMessage();
+                //check whether it is null
+                if (message == null)
+                {
+                    String title = getString(R.string.message_dialog_title);
+                    String mMessage = getString(R.string.message_dialog_message);
+                    Helper.alertDialog(RecipientActivity.this,title,mMessage);
+                }
+                else {
+                    //send the message and go back to the main activity
+                    send(message);
+                    finish();
+                }
+                
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -109,6 +124,7 @@ public class RecipientActivity extends AppCompatActivity {
             //Create the ParseFile Object
             ParseFile file = new ParseFile(filename,fileBytes);
             message.put(ParseConstants.KEY_FILE,file);
+            
             return message;
         }
 
@@ -132,6 +148,28 @@ public class RecipientActivity extends AppCompatActivity {
             }
         }
         return recipientsIds;
+    }
+
+    /**
+     * Send the nessage
+     *
+     * @param message ParseObject
+     */
+    private void send(ParseObject message) {
+        message.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null)
+                {
+                    Toast.makeText(RecipientActivity.this, R.string.send_success_toast,Toast.LENGTH_LONG)
+                            .show();
+                }
+                else {
+                    Helper.alertDialog(RecipientActivity.this, getString(R.string.message_dialog_title),
+                            getString(R.string.send_error_dialog_message));
+                }
+            }
+        });
     }
 
     @Override
