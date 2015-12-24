@@ -2,21 +2,23 @@ package johnkagga.me.pass;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipientActivity extends AppCompatActivity {
@@ -25,6 +27,7 @@ public class RecipientActivity extends AppCompatActivity {
 
     protected ProgressBar mProgressBar;
     protected ListView mFriendsList;
+    protected FloatingActionButton fab;
 
     protected List<ParseUser> mFriends;
     protected ParseRelation<ParseUser> mUserParseRelation;
@@ -38,18 +41,67 @@ public class RecipientActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mFriendsList = (ListView) findViewById(android.R.id.list);
+        mFriendsList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
         mProgressBar = (ProgressBar) findViewById(R.id.recipient_progressBar);
         mProgressBar.setVisibility(View.INVISIBLE);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        mFriendsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //check for how many items are selected
+                if (mFriendsList.getCheckedItemCount() > 0)
+                {
+                    fab.setVisibility(View.VISIBLE);
+                }
+                else {
+                    fab.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Create the ParseObject and send it
+                ParseObject message = createMessage();
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    /**
+     * Creating a message
+     *
+     * @return ParseObject Message
+     */
+    private ParseObject createMessage() {
+        ParseObject message = new ParseObject(ParseConstants.CLASS_MESSAGE);
+        message.put(ParseConstants.KEY_SENDER_ID,mCurrentUser.getObjectId());
+        message.put(ParseConstants.KEY_SENDER_NAME, mCurrentUser.getUsername());
+        message.put(ParseConstants.KEY_RECIPIENTS_IDS, getRecipientIds());
+        return message;
+    }
+
+    /**
+     * Getting the list of recipients
+     *
+     * @return ArrayList of Recipients
+     */
+    private ArrayList<String> getRecipientIds() {
+        ArrayList<String> recipientsIds = new ArrayList<>();
+        //loop through items in the list
+        for (int i = 0; i < mFriendsList.getCount(); i++)
+        {
+            if (mFriendsList.isItemChecked(i))
+            {
+                //checked whether the item is checked at that position
+                //get the objectId
+                recipientsIds.add(mFriends.get(i).getObjectId());
+            }
+        }
+        return recipientsIds;
     }
 
     @Override
