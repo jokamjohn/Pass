@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -15,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.parse.ParseUser;
@@ -30,6 +32,8 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    protected FloatingActionButton fab;
 
     //RequestCodes
     public final static int TAKE_PHOTO_CODE = 0;
@@ -203,6 +207,18 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        //Floating bar for the camera
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setItems(R.array.camera_choices,mDialogListener);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
     }
 
     @Override
@@ -329,11 +345,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, EditFriendsActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.action_camera:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setItems(R.array.camera_choices,mDialogListener);
-                AlertDialog dialog = builder.create();
-                dialog.show();
         }
 
         return super.onOptionsItemSelected(item);

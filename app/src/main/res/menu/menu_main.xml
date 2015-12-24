@@ -20,10 +20,4 @@
         android:title="@string/edit_friends_menu_option"
         app:showAsAction="never"/>
 
-    <item
-        android:id="@+id/action_camera"
-        android:icon="@drawable/ic_camera_alt_24dp"
-        android:title="@string/menu_camera_label"
-        app:showAsAction="always"/>
-
 </menu>
