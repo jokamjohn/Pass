@@ -19,5 +19,9 @@ public final class ParseConstants {
     public static final String KEY_SENDER_NAME = "senderName";
     public static final String KEY_FILE = "file";
     public static final String KEY_FILE_TYPE = "fileType";
+
+    //Application global constants
+    public static final String IMAGE_FILE ="image";
+    public static final String VIDEO_FILE = "video";
 }
 

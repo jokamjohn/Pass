@@ -266,11 +266,23 @@ public class MainActivity extends AppCompatActivity {
                     sendBroadcast(mediaScanIntent);
                     Log.i(LOG_TAG, "saved image to gallery");
                 }
+
             //start recipient activity
             Intent recipientIntent = new Intent(this,RecipientActivity.class);
             recipientIntent.setData(mMediaUri);
+            //set the file type
+            String fileType;
+            if (requestCode == TAKE_PHOTO_CODE || requestCode == CHOOSE_PHOTO_CODE)
+            {
+                fileType = ParseConstants.IMAGE_FILE;
+            }
+            else {
+                fileType = ParseConstants.VIDEO_FILE;
+            }
+            recipientIntent.putExtra(ParseConstants.KEY_FILE_TYPE,fileType);
             startActivity(recipientIntent);
         }
+
         else if (resultCode != RESULT_CANCELED)
         {
             Toast.makeText(this, R.string.general_error, Toast.LENGTH_LONG)

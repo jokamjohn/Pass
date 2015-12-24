@@ -1,5 +1,6 @@
 package johnkagga.me.pass;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -33,12 +34,19 @@ public class RecipientActivity extends AppCompatActivity {
     protected ParseRelation<ParseUser> mUserParseRelation;
     protected ParseUser mCurrentUser;
 
+    protected Uri mMediaUri;
+    protected String mFileType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipient);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Getting the media Uri from the MainActivity Intent and the file type
+        mMediaUri = getIntent().getData();
+        mFileType = getIntent().getExtras().getString(ParseConstants.KEY_FILE_TYPE);
 
         mFriendsList = (ListView) findViewById(android.R.id.list);
         mFriendsList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -81,6 +89,7 @@ public class RecipientActivity extends AppCompatActivity {
         message.put(ParseConstants.KEY_SENDER_ID,mCurrentUser.getObjectId());
         message.put(ParseConstants.KEY_SENDER_NAME, mCurrentUser.getUsername());
         message.put(ParseConstants.KEY_RECIPIENTS_IDS, getRecipientIds());
+        message.put(ParseConstants.KEY_FILE_TYPE,mFileType);
         return message;
     }
 
