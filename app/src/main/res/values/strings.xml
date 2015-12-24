@@ -40,6 +40,8 @@
         <item>Choose Picture</item>
         <item>Choose Videos</item>
     </string-array>
+    <string name="title_activity_recipient">Choose Recipient</string>
+    <string name="empty_recipient_txt">Please Add some friends</string>
 
 
 </resources>

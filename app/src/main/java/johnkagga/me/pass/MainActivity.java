@@ -266,6 +266,10 @@ public class MainActivity extends AppCompatActivity {
                     sendBroadcast(mediaScanIntent);
                     Log.i(LOG_TAG, "saved image to gallery");
                 }
+            //start recipient activity
+            Intent recipientIntent = new Intent(this,RecipientActivity.class);
+            recipientIntent.setData(mMediaUri);
+            startActivity(recipientIntent);
         }
         else if (resultCode != RESULT_CANCELED)
         {
