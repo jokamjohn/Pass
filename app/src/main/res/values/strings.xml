@@ -47,6 +47,7 @@
     <string name="send_error_dialog_message">Message Not sent, Try again</string>
     <string name="send_success_toast">Message sent</string>
     <string name="title_activity_view_image">Pass</string>
+    <string name="app_sub_title">An Xpect Project</string>
 
 
 </resources>
