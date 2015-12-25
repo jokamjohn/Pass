@@ -35,6 +35,7 @@ public class InboxFragment extends ListFragment {
     public void onResume() {
         super.onResume();
 
+        //Find the messages that belong to the user
         ParseQuery<ParseObject> query = new ParseQuery<>(ParseConstants.CLASS_MESSAGE);
         query.whereEqualTo(ParseConstants.KEY_RECIPIENTS_IDS, ParseUser.getCurrentUser().getObjectId());
         query.addAscendingOrder(ParseConstants.KEY_CREATED_AT);
