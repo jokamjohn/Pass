@@ -47,12 +47,16 @@ public class InboxFragment extends ListFragment {
 
         if (messageType.equals(ParseConstants.IMAGE_TYPE))
         {
+            //View Image
             Intent imageIntent = new Intent(getActivity(),ViewImageActivity.class);
             imageIntent.setData(fileUri);
             startActivity(imageIntent);
         }
         else {
-            //video
+            //View Video
+            Intent intent = new Intent(Intent.ACTION_VIEW,fileUri);
+            intent.setDataAndType(fileUri,"video/*");
+            startActivity(intent);
         }
 
     }
@@ -64,7 +68,7 @@ public class InboxFragment extends ListFragment {
         //Find the messages that belong to the user
         ParseQuery<ParseObject> query = new ParseQuery<>(ParseConstants.CLASS_MESSAGE);
         query.whereEqualTo(ParseConstants.KEY_RECIPIENTS_IDS, ParseUser.getCurrentUser().getObjectId());
-        query.addAscendingOrder(ParseConstants.KEY_CREATED_AT);
+        query.addDescendingOrder(ParseConstants.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> messages, ParseException e) {
