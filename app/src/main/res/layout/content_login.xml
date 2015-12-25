@@ -75,16 +75,26 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/login_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_centerHorizontal="true"/>
+
     <Button
         android:id="@+id/loginButton"
+        android:textColor="@color/text_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/backgroundImage"
-        android:layout_alignStart="@+id/backgroundImage"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/linearLayout"
         android:text="@string/login_label"
-        android:textAllCaps="false"
-        android:textSize="20sp"/>
+        android:textAllCaps="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/custom_button"
+        android:textSize="13sp"/>
 
     <TextView
         android:id="@+id/signupText"
@@ -97,13 +107,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/white"
         />
-
-    <ProgressBar
-        android:id="@+id/login_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/backgroundImage"
-        android:layout_centerHorizontal="true"/>
 
 
 </RelativeLayout>

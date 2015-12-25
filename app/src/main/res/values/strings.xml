@@ -5,7 +5,7 @@
     <string name="title_activity_login">Sign in</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
-    <string name="login_label">Login</string>
+    <string name="login_label">Sign in</string>
     <string name="signup_text">Don`t have an account? SignUp</string>
     <string name="title_activity_signup">Signup</string>
     <string name="signup_button_label">Sign Up</string>
