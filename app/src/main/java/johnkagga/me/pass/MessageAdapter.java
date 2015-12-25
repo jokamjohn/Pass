@@ -65,4 +65,12 @@ public class MessageAdapter extends ArrayAdapter<ParseObject> {
             mLabel = (TextView) view.findViewById(R.id.senderName);
         }
     }
+
+    public void refill(List<ParseObject> messages)
+    {
+        //clear the list and add data and also notify the adapter when data changes
+        mMessages.clear();
+        mMessages.addAll(messages);
+        notifyDataSetChanged();
+    }
 }
