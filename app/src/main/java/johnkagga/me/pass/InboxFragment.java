@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -54,8 +53,7 @@ public class InboxFragment extends ListFragment {
                         i++;
                     }
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
-                            android.R.layout.simple_list_item_1, senderName);
+                    MessageAdapter adapter = new MessageAdapter(getActivity(),mMessages);
                     setListAdapter(adapter);
                 }
                 else {
